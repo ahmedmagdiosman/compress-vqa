@@ -131,7 +131,7 @@ def exec_validation(model, opt, mode, folder, it, visualize=False):
         img_feature = Variable(torch.from_numpy(t_img_feature)).cuda().float()
         label = Variable(torch.from_numpy(t_answer)).cuda()
         glove = Variable(torch.from_numpy(t_glove_matrix)).cuda().float()
-        pred = model(data, word_length, img_feature, glove, mode)
+        pred = model(data, word_length, img_feature, glove)
         pred = (pred.data).cpu().numpy()
         if mode == 'test-dev' or 'test':
             pass
