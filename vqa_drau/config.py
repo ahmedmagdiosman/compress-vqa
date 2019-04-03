@@ -9,24 +9,24 @@ VQA_PREFIX = '/content/gdrive/My Drive/vqa/vqa_api/'
 feat = 'faster_rcnn_resnet_pool5'
 DATA_PATHS = {
     'train': {
-        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_train2014_questions_sample.json',
-        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_train2014_annotations_sample.json',
+        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_train2014_questions.json',
+        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_train2014_annotations.json',
         'features_prefix': VQA_PREFIX + '/Features/%s/trainval_36/COCO_trainval_'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/train2014/COCO_train2014_'%feat
     },
     'val': {
-        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_val2014_questions_sample.json',
-        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_val2014_annotations_sample.json',
+        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_val2014_questions.json',
+        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_val2014_annotations.json',
         'features_prefix': VQA_PREFIX + '/Features/%s/trainval_36/COCO_trainval_'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/val2014/COCO_val2014_'%feat
     },
     'test-dev': {
-        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_test-dev2015_questions_sample.json',
+        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_test-dev2015_questions.json',
         'features_prefix': VQA_PREFIX + '/Features/%s/test2015_36/COCO_test_'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/test2015/COCO_test2015_'%feat
     },
     'test': {
-        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_test2015_questions_sample.json',
+        'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_test2015_questions.json',
         'features_prefix': VQA_PREFIX + '/Features/%s/test2015_36/COCO_test_'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/test2015/COCO_test2015_'%feat
     },
