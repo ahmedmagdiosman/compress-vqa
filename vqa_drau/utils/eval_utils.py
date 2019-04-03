@@ -112,7 +112,7 @@ def visualize_failures(stat_list,mode):
     qt_howmany_list =[['how','many']]
     save_qtype(qt_howmany_list, 'howmany', mode)
 
-def exec_validation(model, opt, mode, folder, it, visualize=False):
+def exec_validation(model, opt, mode, folder, it, name, visualize=False):
     model.eval()
     criterion = nn.NLLLoss()
     dp = VQADataProvider(opt, batchsize=opt.VAL_BATCH_SIZE, mode=mode, folder=folder)
@@ -177,7 +177,7 @@ def exec_validation(model, opt, mode, folder, it, visualize=False):
 
     if mode == 'val':
         mean_testloss = np.array(testloss_list).mean()
-        valFile = './%s/val2015_resfile'%folder
+        valFile = './%s/val2015_%s_resfile'%(folder,name)
         with open(valFile, 'w') as f:
             json.dump(final_list, f)
         if visualize:
