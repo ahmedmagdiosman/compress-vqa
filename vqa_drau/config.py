@@ -1,10 +1,10 @@
 import argparse
 # vqa tools - get from https://github.com/VT-vision-lab/VQA
-VQA_TOOLS_PATH = '/content/gdrive/My Drive/vqa/vqa_api/PythonHelperTools'
-VQA_EVAL_TOOLS_PATH = '/content/gdrive/My Drive/vqa/vqa_api/PythonEvaluationTools'
+VQA_TOOLS_PATH = '../vqa_api/PythonHelperTools'
+VQA_EVAL_TOOLS_PATH = '../vqa_api/PythonEvaluationTools'
 
 # location of the data
-VQA_PREFIX = '/content/gdrive/My Drive/vqa/vqa_api/'
+VQA_PREFIX = '../vqa_api/'
 
 feat = 'faster_rcnn_resnet_pool5'
 DATA_PATHS = {
@@ -50,7 +50,7 @@ def parse_opt():
     parser.add_argument('--TESTDEV_INTERVAL', type=int, default=100000)
     parser.add_argument('--CHECKPOINT_INTERVAL', type=int, default=5000)
     parser.add_argument('--RESUME', type=bool, default=False)
-    parser.add_argument('--RESUME_PATH', type=str, default='./data/drau_glove_iter_10000.pth')
+    parser.add_argument('--RESUME_PATH', type=str, default='./data/drau_glove_iter_100000.pth')
     parser.add_argument('--VAL_INTERVAL', type=int, default=100000)
     parser.add_argument('--IMAGE_CHANNEL', type=int, default=2048)
     parser.add_argument('--INIT_LERARNING_RATE', type=float, default=0.001)
