@@ -1,10 +1,10 @@
 import argparse
 # vqa tools - get from https://github.com/VT-vision-lab/VQA
-VQA_TOOLS_PATH = '../vqa_api/PythonHelperTools'
-VQA_EVAL_TOOLS_PATH = '../vqa_api/PythonEvaluationTools'
+VQA_TOOLS_PATH = './vqa_api/PythonHelperTools'
+VQA_EVAL_TOOLS_PATH = './vqa_api/PythonEvaluationTools'
 
 # location of the data
-VQA_PREFIX = '../vqa_api/'
+VQA_PREFIX = './vqa_api/'
 
 feat = 'faster_rcnn_resnet_pool5'
 DATA_PATHS = {
