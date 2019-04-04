@@ -97,8 +97,6 @@ def adjust_learning_rate(optimizer, decay_rate):
         param_group['lr'] = param_group['lr'] * decay_rate
 
 def train():
-    # DISABLE CUDNN FOR SERVER FOR SOME REASON ITS BROKEN
-    #torch.backends.cudnn.enabled=False
     criterion = nn.KLDivLoss(size_average=False)
     train_loss = np.zeros(opt.MAX_ITERATIONS + 1)
     results = []

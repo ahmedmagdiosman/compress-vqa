@@ -4,7 +4,8 @@ import re, json, random
 import config
 import torch.utils.data as data
 import spacy
-
+import h5py
+ 
 QID_KEY_SEPARATOR = '/'
 ZERO_PAD = '_PAD'
 GLOVE_EMBEDDING_SIZE = 300
@@ -231,49 +232,58 @@ class VQADataProvider:
             avec = np.zeros((self.batchsize, self.opt.NUM_OUTPUT_UNITS))
         glove_matrix = np.zeros((self.batchsize, self.max_length, GLOVE_EMBEDDING_SIZE))
 
-        for i,qid in enumerate(qid_list):
+        # Colab can't handle thousands of npz files, so we switched to hdf5.
+        # Although opening and closing the file on every batch creation is inefficient,
+        # colab forces us to do so since it freaks out with large files too.
+        # data_split hack: used to be per element, but since we need to access a specific h5 file now, we need to define beforehand
+        data_split = qid_list[0].split(QID_KEY_SEPARATOR)[0]
+        with h5py.File(config.DATA_PATHS[data_split]['features'], "r") as feature_file:
+         
+            for i,qid in enumerate(qid_list):
 
-            # load raw question information
-            q_str = self.getQuesStr(qid)
-            q_ans = self.getAnsObj(qid)
-            q_iid = self.getImgId(qid)
+                # load raw question information
+                q_str = self.getQuesStr(qid)
+                q_ans = self.getAnsObj(qid)
+                q_iid = self.getImgId(qid)
 
-            # convert question to vec
-            q_list = VQADataProvider.seq_to_list(q_str)
-            t_qvec, t_cvec, t_glove_matrix = self.qlist_to_vec(self.max_length, q_list)
+                # convert question to vec
+                q_list = VQADataProvider.seq_to_list(q_str)
+                t_qvec, t_cvec, t_glove_matrix = self.qlist_to_vec(self.max_length, q_list)
 
-            try:
-                qid_split = qid.split(QID_KEY_SEPARATOR)
-                data_split = qid_split[0]
-                if data_split == 'genome':
-                    t_ivec = np.load(config.DATA_PATHS['genome']['features_prefix'] + str(q_iid) + '.jpg.npz')['x']
+                try:
+                    qid_split = qid.split(QID_KEY_SEPARATOR)
+                    data_split = qid_split[0]
+                    if data_split == 'genome':
+                        #t_ivec = feature_file[str(q_iid)][:]
+                        t_ivec = np.load(config.DATA_PATHS['genome']['features_prefix'] + str(q_iid) + '.jpg.npz')['x']
+                    else:
+                        t_ivec = feature_file[str(q_iid)][:]
+                        #t_ivec = np.load(config.DATA_PATHS[data_split]['features_prefix'] + str(q_iid) + '.npz')['x'] # my format
+                        #t_ivec = np.load(config.DATA_PATHS[data_split]['features_prefix'] + str(q_iid).zfill(12) + '.jpg.npz')['x']
+                   
+                    #if self.opt.IMG_FEAT_TYPE == 'faster_rcnn_resnet_pool5':
+                        # transpose FRCNN features cause of how I saved them.
+                    #    t_ivec = np.transpose(t_ivec)
+     
+                    # reshape t_ivec to D x FEAT_SIZE
+                    if len(t_ivec.shape) > 2:
+                        t_ivec = t_ivec.reshape((2048, -1))
+                    t_ivec = ( t_ivec / np.sqrt((t_ivec**2).sum()) )
+                except:
+                    t_ivec = 0.
+                    print ('data not found for qid : ', q_iid,  self.mode)
+                 
+                # convert answer to vec
+                if self.mode == 'val' or self.mode == 'test-dev' or self.mode == 'test':
+                    q_ans_str = self.extract_answer(q_ans)
+                    t_avec = self.answer_to_vec(q_ans_str)
                 else:
-                    t_ivec = np.load(config.DATA_PATHS[data_split]['features_prefix'] + str(q_iid) + '.npz')['x'] # my format
-                    #t_ivec = np.load(config.DATA_PATHS[data_split]['features_prefix'] + str(q_iid).zfill(12) + '.jpg.npz')['x']
-               
-                if self.opt.IMG_FEAT_TYPE == 'faster_rcnn_resnet_pool5':
-                    # transpose FRCNN features cause of how I saved them.
-                    t_ivec = np.transpose(t_ivec)
- 
-                # reshape t_ivec to D x FEAT_SIZE
-                if len(t_ivec.shape) > 2:
-                    t_ivec = t_ivec.reshape((2048, -1))
-                t_ivec = ( t_ivec / np.sqrt((t_ivec**2).sum()) )
-            except:
-                t_ivec = 0.
-                print ('data not found for qid : ', q_iid,  self.mode)
-             
-            # convert answer to vec
-            if self.mode == 'val' or self.mode == 'test-dev' or self.mode == 'test':
-                q_ans_str = self.extract_answer(q_ans)
-                t_avec = self.answer_to_vec(q_ans_str)
-            else:
-                t_avec = self.extract_answer_list(q_ans)
-            qvec[i,...] = t_qvec
-            cvec[i,...] = t_cvec
-            ivec[i,:,0:t_ivec.shape[1]] = t_ivec
-            avec[i,...] = t_avec
-            glove_matrix[i,...] = t_glove_matrix
+                    t_avec = self.extract_answer_list(q_ans)
+                qvec[i,...] = t_qvec
+                cvec[i,...] = t_cvec
+                ivec[i,:,0:t_ivec.shape[1]] = t_ivec
+                avec[i,...] = t_avec
+                glove_matrix[i,...] = t_glove_matrix
 
         return qvec, cvec, ivec, avec, glove_matrix
 
