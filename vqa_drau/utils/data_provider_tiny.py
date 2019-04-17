@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import re, json, random
-import config_small
+import config_small as config
 import torch.utils.data as data
 import spacy
 import h5py
