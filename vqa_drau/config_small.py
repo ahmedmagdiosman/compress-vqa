@@ -10,13 +10,13 @@ feat = 'faster_rcnn_resnet_pool5'
 DATA_PATHS = {
     'train': {
         'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_train2014_questions_sample.json',
-        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_train2014_annotations.json',
+        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_train2014_annotations_sample.json',
         'features': VQA_PREFIX + '/Features/%s/trainval_36.h5'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/train2014/COCO_train2014_'%feat
     },
     'val': {
         'ques_file': VQA_PREFIX + '/Questions/v2_OpenEnded_mscoco_val2014_questions_sample.json',
-        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_val2014_annotations.json',
+        'ans_file': VQA_PREFIX + '/Annotations/v2_mscoco_val2014_annotations_sample.json',
         'features': VQA_PREFIX + '/Features/%s/trainval_36.h5'%feat
         # 'features_prefix': VQA_PREFIX + '/Features/ms_coco/resnet_%s_bgrms_large/val2014/COCO_val2014_'%feat
     },
