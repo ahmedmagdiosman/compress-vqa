@@ -18,6 +18,7 @@ sys.path.append(config.VQA_TOOLS_PATH)
 sys.path.append(config.VQA_EVAL_TOOLS_PATH)
 from vqaTools.vqa import VQA
 from vqaEvaluation.vqaEval import VQAEval
+import warnings
 
 def exec_validation(model, opt, mode, folder, it, name, visualize=False):
     model.eval()
@@ -83,7 +84,10 @@ def exec_validation(model, opt, mode, folder, it, name, visualize=False):
         final_list.append({u'answer': ans, u'question_id': qid})
 
     if mode == 'val':
-        mean_testloss = np.array(testloss_list).mean()
+        # I expect to see RuntimeWarnings in this block 
+        with warnings.catch_warnings(): 
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            mean_testloss = np.array(testloss_list).mean()
         valFile = './%s/val2015_%s_resfile'%(folder,name)
         with open(valFile, 'w') as f:
             json.dump(final_list, f)
