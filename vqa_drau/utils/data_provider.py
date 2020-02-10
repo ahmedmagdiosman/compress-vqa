@@ -28,7 +28,7 @@ class VQADataProvider:
             self.adict = json.load(f)
 
         self.n_ans_vocabulary = len(self.adict)
-        self.nlp = en_vectors_web_lg.load('en_vectors_web_lg')
+        self.nlp = en_vectors_web_lg.load()
         self.glove_dict = {} # word -> glove vector
 
     @staticmethod
