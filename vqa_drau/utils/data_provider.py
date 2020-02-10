@@ -3,7 +3,7 @@ import numpy as np
 import re, json, random
 import config
 import torch.utils.data as data
-import spacy
+import en_vectors_web_lg
 import h5py
  
 QID_KEY_SEPARATOR = '/'
@@ -28,7 +28,7 @@ class VQADataProvider:
             self.adict = json.load(f)
 
         self.n_ans_vocabulary = len(self.adict)
-        self.nlp = spacy.load('en_vectors_web_lg')
+        self.nlp = en_vectors_web_lg.load('en_vectors_web_lg')
         self.glove_dict = {} # word -> glove vector
 
     @staticmethod
